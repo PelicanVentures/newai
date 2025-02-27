@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelican Ventures | AI Knowledge Hub</title>
+    <style>
+        :root {
+            --primary: #008080; /* Pelican teal */
+            --secondary: #f8bd00; /* Pelican gold accent */
+            --dark: #1b2025; /* Dark blue/gray */
+            --light: #f8f9fa;
+            --mid: #5c6670;
+            --border: #e0e3e7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .hero {
+            background-color: var(--primary);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        section {
+            padding: 60px 0;
+            background-color: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        section h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .resource-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background-color: var(--secondary);
+            transition: height 0.3s ease;
+        }
+        
+        .resource-card:hover::before {
+            height: 100%;
+        }
+        
+        .resource-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        
+        .resource-content {
+            padding: 20px;
+        }
+        
+        .resource-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .resource-content p {
+            color: var(--mid);
+            margin-bottom: 15px;
+        }
+        
+        .resource-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        .tag {
+            background-color: rgba(0, 128, 128, 0.1);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .news-item {
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-item h3 {
+            margin-bottom: 10px;
+        }
+        
+        .news-meta {
+            color: var(--mid);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .newsletter {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--mid);
+        }
+        
+        .content-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .tab:hover::after {
+            width: 100%;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab.active::after {
+            width: 100%;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-logo {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+        
+        .footer-column h4 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--secondary);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--mid);
+            font-size: 0.9rem;
+        }
+        
+        button, .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        button::after, .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background-color: rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            z-index: -1;
+        }
+        
+        button:hover::after, .btn:hover::after {
+            height: 100%;
+        }
+        
+        button:hover, .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(0, 128, 128, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 0C22.4 0 0 22.4 0 50C0 77.6 22.4 100 50 100C77.6 100 100 77.6 100 50C100 22.4 77.6 0 50 0ZM72 72C65 79 56.5 82 46.5 80C36.5 78 29 71.5 25 62C21 52.5 22 42.5 28 34C29.5 32 31.5 30 34 28.5C34.5 28 35 28 35.5 28C36 28.5 36 29 36 29.5C36 33.5 36 37.5 36 41.5C36 42 36 42.5 35.5 43C32.5 46 31.5 50 32.5 54C33.5 58 36.5 61 40.5 62C45 63 49 61.5 52 58C52.5 57.5 52.5 57 52.5 56.5C52.5 47.5 52.5 38.5 52.5 29.5C52.5 29 52.5 28.5 53 28C53.5 28 54 28 54.5 28.5C59 32 62.5 36 64.5 41.5C67.5 49.5 67 57.5 63 65C67 61.5 70 57.5 71.5 52.5C74.5 42.5 72 31 63.5 22.5C53.5 12.5 39.5 10 27 15.5C14.5 21 7 31.5 6 45C5 58.5 11 69.5 22.5 77.5C34 85.5 46.5 86.5 59.5 81C72.5 75.5 80 65 81.5 51.5C83 38 77.5 27 67 18.5C66.5 18 66 17.5 66 17C66 16.5 66.5 16 67 16C67.5 16 68 16.5 68.5 16.5C84.5 28 90 50.5 82 68C79 74.5 76 78.5 72 72Z" fill="#008080"/>
+                    </svg>
+                    <span>Pelican Ventures</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="active">Home</a>
+                    <a href="#resources">AI Resources</a>
+                    <a href="#news">Insurance News</a>
+                    <a href="#newsletter">AI Newsletter</a>
+                </div>
+                <div class="mobile-menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 18H21V16H3V18ZM3 13H21V11H3V13ZM3 6V8H21V6H3Z" fill="currentColor"/>
+                    </svg>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Pelican Ventures AI Knowledge Hub</h1>
+            <p>Empowering our teams and investors with the latest insights in artificial intelligence and insurance technology</p>
+            <div class="hero-badge">Est. 2019</div>
+        </div>
+    </div>
+    
+    <style>
+        .hero {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,128,128,0.9) 0%, rgba(27,32,37,0.95) 100%);
+            z-index: 0;
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            opacity: 0.9;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            font-weight: 600;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+    </style>
+
+    <div class="container">
+        <section id="resources">
+            <h2>AI Resources</h2>
+            <div class="content-tabs">
+                <div class="tab active" data-tab="all">All</div>
+                <div class="tab" data-tab="podcasts">Podcasts</div>
+                <div class="tab" data-tab="articles">Articles</div>
+                <div class="tab" data-tab="videos">Videos</div>
+                <div class="tab" data-tab="books">Books</div>
+            </div>
+
+            <div class="tab-content active" id="all-content">
+                <div class="resource-grid">
+                    <!-- Podcast Example -->
+                    <div class="resource-card">
+                        <img src="/api/placeholder/400/320" alt="AI podcast thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Podcast</span>
+                            <h3>The Future of AI in Insurance</h3>
+                            <p>A deep dive into how AI is transforming risk assessment and claims processing.</p>
+                            <div class="resource-meta">
+                                <span>45 min</span>
+                                <span>Feb 20, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article Example -->
+                    <div class="resource-card">
+                        <img src="/api/placeholder/400/320" alt="AI article thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Article</span>
+                            <h3>Large Language Models in Underwriting</h3>
+                            <p>How LLMs are helping underwriters make better decisions with unstructured data.</p>
+                            <div class="resource-meta">
+                                <span>10 min read</span>
+                                <span>Feb 15, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Example -->
+                    <div class="resource-card">
+                        <img src="/api/placeholder/400/320" alt="AI video thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Video</span>
+                            <h3>Computer Vision for Claims Assessment</h3>
+                            <p>A technical demo of using computer vision to automate property damage assessment.</p>
+                            <div class="resource-meta">
+                                <span>23 min</span>
+                                <span>Feb 12, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Example -->
+                    <div class="resource-card">
+                        <img src="/api/placeholder/400/320" alt="AI book thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Book</span>
+                            <h3>AI Superpowers: China, Silicon Valley, and the New World Order</h3>
+                            <p>Kai-Fu Lee's perspective on the global AI race and its implications.</p>
+                            <div class="resource-meta">
+                                <span>272 pages</span>
+                                <span>Recommended Read</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other tab contents would go here -->
+            <div class="tab-content" id="podcasts-content">
+                <!-- Podcast-specific content -->
+            </div>
+            
+            <div class="tab-content" id="articles-content">
+                <!-- Articles-specific content -->
+            </div>
+            
+            <div class="tab-content" id="videos-content">
+                <!-- Videos-specific content -->
+            </div>
+            
+            <div class="tab-content" id="books-content">
+                <!-- Books-specific content -->
+            </div>
+        </section>
+
+        <section id="news">
+            <h2>Insurance News & Analysis</h2>
+            
+            <div class="news-item">
+                <h3>Dowling IBNR Weekly Summary: February 24, 2025</h3>
+                <div class="news-meta">
+                    <span>Published on February 26, 2025</span>
+                </div>
+                <p>This week's Dowling report highlights significant developments in the reinsurance market, with property cat rates showing signs of stabilization after two years of hardening. The report also notes increased interest from capital markets in insurance-linked securities (ILS), potentially indicating a shift in market dynamics.</p>
+                <p>Key points:</p>
+                <ul>
+                    <li>Property cat rate increases slowing to single digits</li>
+                    <li>New capital entering the ILS market</li>
+                    <li>Technology investment in cat modeling showing promising results</li>
+                </ul>
+                <p>Our analysis: The cooling rate environment presents both challenges and opportunities for insurtech companies focused on property risk. We're seeing potential for partnerships between traditional carriers and AI-powered startups that can provide more granular risk assessment.</p>
+            </div>
+            
+            <div class="news-item">
+                <h3>Specialty Insurance Market Update: Cyber Trends</h3>
+                <div class="news-meta">
+                    <span>Published on February 22, 2025</span>
+                </div>
+                <p>The cyber insurance market continues to evolve rapidly with claims frequency increasing while severity has somewhat stabilized. New AI-powered security tools are beginning to impact underwriting models, with carriers increasingly differentiating based on adoption of these technologies.</p>
+                <p>We're closely monitoring how large language models are being deployed for both attack and defense in the cybersecurity landscape, with implications for coverage terms and pricing models.</p>
+            </div>
+        </section>
+
+        <section id="newsletter">
+            <h2>AI Innovation Newsletter</h2>
+            
+            <div class="newsletter">
+                <div class="newsletter-meta">
+                    <span>Volume 3, Issue 4</span>
+                    <span>February 15-28, 2025</span>
+                </div>
+                <h3>AI Initiatives Update: Claims Automation Pilot</h3>
+                <p>Our claims automation project with PartnerCo has completed its first phase, processing over 5,000 auto claims with impressive results:</p>
+                <ul>
+                    <li>76% of claims handled without human intervention</li>
+                    <li>Average processing time reduced from 3.2 days to 6.4 hours</li>
+                    <li>Customer satisfaction scores increased by 12 points</li>
+                </ul>
+                <p>Phase two will expand to homeowners claims starting next month, with a focus on water damage incidents initially.</p>
+                
+                <h3>Team Spotlight: Data Science Group</h3>
+                <p>Our data science team has grown to 12 members with the addition of Dr. Sarah Chen, who joins us from Stanford's AI Lab. Sarah will lead our efforts in generative AI applications for insurance product development.</p>
+                
+                <h3>Research Corner: Active Learning in Underwriting</h3>
+                <p>We've published a new white paper on active learning techniques that reduce the data requirements for building effective underwriting models. Early tests show we can achieve comparable accuracy with 40% less labeled data, significantly accelerating model development cycles.</p>
+                
+                <a href="#" class="btn">View Full Newsletter</a>
+            </div>
+            
+            <div class="newsletter">
+                <div class="newsletter-meta">
+                    <span>Volume 3, Issue 3</span>
+                    <span>February 1-14, 2025</span>
+                </div>
+                <h3>AI Initiatives Update: LLM Fine-tuning Project</h3>
+                <p>We've completed fine-tuning our domain-specific language model on insurance documents, with impressive early results in policy analysis and coverage interpretation. The model can now accurately extract key terms from policies and identify potential coverage gaps.</p>
+                
+                <h3>Industry Partnership: University Research Program</h3>
+                <p>We're excited to announce a new partnership with MIT's Insurance Innovation Lab to sponsor three graduate research projects focused on AI applications in risk assessment.</p>
+                
+                <a href="#" class="btn">View Full Newsletter</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="footer-logo-symbol">
+                        <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 0C22.4 0 0 22.4 0 50C0 77.6 22.4 100 50 100C77.6 100 100 77.6 100 50C100 22.4 77.6 0 50 0ZM72 72C65 79 56.5 82 46.5 80C36.5 78 29 71.5 25 62C21 52.5 22 42.5 28 34C29.5 32 31.5 30 34 28.5C34.5 28 35 28 35.5 28C36 28.5 36 29 36 29.5C36 33.5 36 37.5 36 41.5C36 42 36 42.5 35.5 43C32.5 46 31.5 50 32.5 54C33.5 58 36.5 61 40.5 62C45 63 49 61.5 52 58C52.5 57.5 52.5 57 52.5 56.5C52.5 47.5 52.5 38.5 52.5 29.5C52.5 29 52.5 28.5 53 28C53.5 28 54 28 54.5 28.5C59 32 62.5 36 64.5 41.5C67.5 49.5 67 57.5 63 65C67 61.5 70 57.5 71.5 52.5C74.5 42.5 72 31 63.5 22.5C53.5 12.5 39.5 10 27 15.5C14.5 21 7 31.5 6 45C5 58.5 11 69.5 22.5 77.5C34 85.5 46.5 86.5 59.5 81C72.5 75.5 80 65 81.5 51.5C83 38 77.5 27 67 18.5C66.5 18 66 17.5 66 17C66 16.5 66.5 16 67 16C67.5 16 68 16.5 68.5 16.5C84.5 28 90 50.5 82 68C79 74.5 76 78.5 72 72Z" fill="#008080"/>
+                        </svg>
+                    </div>
+                    <h3>Pelican Ventures</h3>
+                    <p>Empowering the future of insurance through technology and innovation.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#resources">AI Resources</a></li>
+                            <li><a href="#news">Insurance News</a></li>
+                            <li><a href="#newsletter">AI Newsletter</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li><a href="mailto:info@pelican.vc">info@pelican.vc</a></li>
+                            <li><a href="#">New York · Boston · Miami</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Pelican Ventures. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <style>
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 40px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo-symbol {
+            margin-bottom: 15px;
+        }
+        
+        .footer-logo h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .footer-column h4 {
+            position: relative;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding-bottom: 12px;
+        }
+        
+        .footer-column h4::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            padding-left: 2px;
+        }
+        
+        .footer-column a::before {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .footer-column a:hover::before {
+            width: 100%;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 60px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show corresponding tab content
+                const tabType = tab.getAttribute('data-tab');
+                document.getElementById(`${tabType}-content`).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
