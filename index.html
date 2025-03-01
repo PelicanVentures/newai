@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelican Ventures | AI Knowledge Hub</title>
+    <style>
+        :root {
+            --primary: #273D66; /* Updated to Pelican blue */
+            --secondary: #f8bd00; /* Pelican gold accent */
+            --dark: #1b2025; /* Dark blue/gray */
+            --light: #f8f9fa;
+            --mid: #5c6670;
+            --border: #e0e3e7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .hero {
+            background-color: var(--primary);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        section {
+            padding: 60px 0;
+            background-color: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        section h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 420px; /* Fixed height for all cards */
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .resource-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background-color: var(--secondary);
+            transition: height 0.3s ease;
+        }
+        
+        .resource-card:hover::before {
+            height: 100%;
+        }
+        
+        .resource-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        
+        .resource-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        
+        .resource-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            height: 50px; /* Fixed height for titles */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .resource-content p {
+            color: var(--mid);
+            margin-bottom: 15px;
+            height: 80px; /* Fixed height for descriptions */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+        
+        .resource-meta {
+            margin-top: auto;
+            width: 100%;
+        }
+        
+        .tag {
+            background-color: rgba(39, 61, 102, 0.1); /* Updated to match new primary color */
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .news-item {
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-item h3 {
+            margin-bottom: 10px;
+        }
+        
+        .news-meta {
+            color: var(--mid);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .news-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .news-content li {
+            margin-bottom: 8px;
+        }
+        
+        /* Updated podcast player to match the design shown */
+        .podcast-player {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .podcast-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .podcast-icon {
+            background-color: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .podcast-icon svg {
+            width: 25px;
+            height: 25px;
+            fill: white;
+        }
+        
+        .podcast-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .podcast-info p {
+            color: var(--mid);
+            font-size: 0.9rem;
+        }
+        
+        .audio-player {
+            margin-top: 15px;
+            background: #e2e2e2;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .audio-player audio {
+            width: 100%;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-top: 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: rgba(39, 61, 102, 0.1);
+        }
+        
+        .newsletter {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--mid);
+        }
+        
+        .content-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .tab:hover::after {
+            width: 100%;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab.active::after {
+            width: 100%;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-logo {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+        
+        .footer-column h4 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--secondary);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--mid);
+            font-size: 0.9rem;
+        }
+        
+        button, .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        button::after, .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background-color: rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            z-index: -1;
+        }
+        
+        button:hover::after, .btn:hover::after {
+            height: 100%;
+        }
+        
+        button:hover, .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #344d7e; /* Slightly darker than primary */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            color: white;
+        }
+        
+        /* New style for news content padding */
+        .news-content {
+            padding-left: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="https://static.wixstatic.com/media/806338_4cf2c29b177b4fd9bc360a99d10ff304~mv2.jpg/v1/fill/w_200,h_66,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/PV_LOGO_CMYK_on%20white%20-%20CROPPED.jpg" alt="Pelican Ventures Logo" style="height: 40px;">
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="active">Home</a>
+                    <a href="#resources">AI Resources</a>
+                    <a href="#news">Insurance News</a>
+                    <a href="#newsletter">AI Newsletter</a>
+                </div>
+                <div class="mobile-menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 18H21V16H3V18ZM3 13H21V11H3V13ZM3 6V8H21V6H3Z" fill="currentColor"/>
+                    </svg>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Pelican Ventures' AI Knowledge Hub</h1>
+            <p>Empowering our teams and investors with the latest insights in artificial intelligence and insurance technology</p>
+        </div>
+    </div>
+    
+    <style>
+        .hero {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(39, 61, 102, 0.9) 0%, rgba(27,32,37,0.95) 100%);
+            z-index: 0;
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            opacity: 0.9;
+        }
+    </style>
+
+    <div class="container">
+        <style>
+            /* Additional News Section Styling */
+            section#news h2 {
+                margin-left: 40px;
+            }
+            
+            section#news .news-item {
+                margin-left: 40px;
+                margin-right: 40px;
+                width: calc(100% - 80px);
+            }
+        </style>
+        <section id="resources">
+            <h2>AI Resources</h2>
+            <div class="content-tabs">
+                <div class="tab active" data-tab="tools">Tools</div>
+                <div class="tab" data-tab="articles">Articles</div>
+                <div class="tab" data-tab="videos">Videos</div>
+                <div class="tab" data-tab="books">Books</div>
+            </div>
+
+            <div class="tab-content" id="all-content" style="display: none;">
+                <!-- This content is now hidden -->
+            </div>
+
+            <!-- Tools Tab Content with Updated Image URLs -->
+            <div class="tab-content active" id="tools-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <img src="https://media.wired.com/photos/66425c483aeee12d6ca99835/1:1/w_1800,h_1800,c_limit/New-ChatGPT-Tier-Gear-GettyImages-2151457871.jpg" alt="ChatGPT thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Tool</span>
+                            <h3>ChatGPT</h3>
+                            <p>OpenAI's conversational AI assistant with multiple GPT models, capable of natural language understanding and generation.</p>
+                            <div class="resource-meta">
+                                <a href="https://chatgpt.com" target="_blank" class="btn-secondary">Visit Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://claude.ai/images/claude_ogimage.png" alt="Claude thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Tool</span>
+                            <h3>Claude</h3>
+                            <p>Anthropic's AI assistant designed to be helpful, harmless, and honest, with capabilities in writing, analysis, and reasoning.</p>
+                            <div class="resource-meta">
+                                <a href="https://claude.ai/" target="_blank" class="btn-secondary">Visit Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Google_Gemini_logo.svg/1200px-Google_Gemini_logo.svg.png" alt="Google Gemini thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Tool</span>
+                            <h3>Google Gemini</h3>
+                            <p>Google's multimodal AI assistant that can understand text, images, code, and audio for comprehensive assistance.</p>
+                            <div class="resource-meta">
+                                <a href="https://gemini.google.com/app" target="_blank" class="btn-secondary">Visit Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://thseagleseye.com/wp-content/uploads/2024/11/notebooklm-pic-2-850x531.jpg" alt="Google NotebookLM thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Tool</span>
+                            <h3>Google NotebookLM</h3>
+                            <p>An AI-powered notebook for organizing and exploring information with LLM assistance and source-grounded responses.</p>
+                            <div class="resource-meta">
+                                <a href="https://notebooklm.google.com/" target="_blank" class="btn-secondary">Visit Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://assets.bizclikmedia.net/1800/b9c92286e658119663b97a2267aee9d1:0006bf344b145b7046bf9b5f43b7a786/perplexity-logo.webp" alt="Perplexity thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Tool</span>
+                            <h3>Perplexity</h3>
+                            <p>AI-powered search engine that provides answers with sources and citations from across the web.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.perplexity.ai" target="_blank" class="btn-secondary">Visit Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://miro.medium.com/v2/resize:fit:1400/1*tj5Fgl_HTikHW_uTJmE2qg.jpeg" alt="Midjourney thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Tool</span>
+                            <h3>Midjourney</h3>
+                            <p>AI image generation platform that creates detailed, artistic images from text descriptions with remarkable quality.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.midjourney.com" target="_blank" class="btn-secondary">Visit Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- New Card for Llama 3 -->
+                    <div class="resource-card">
+                        <img src="https://opendatascience.com/wp-content/uploads/2023/02/Untitled-design-1-2.png" alt="Llama 3 thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Tool</span>
+                            <h3>Meta's Llama 3</h3>
+                            <p>Open-source large language model from Meta, designed for developers and researchers to build advanced AI applications.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.llama.com" target="_blank" class="btn-secondary">Visit Tool</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Updated Articles Tab Content with new Deep Research description -->
+            <div class="tab-content" id="articles-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <img src="https://images.macrumors.com/t/_ta0kSK8pNaNq-vh_CeF7O6w5Zs=/400x0/article-new/2025/02/openai-chatgpt-4-5.jpg?lossy" alt="GPT-4.5 thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Article</span>
+                            <h3>Introducing GPT-4.5</h3>
+                            <p>We're releasing a research preview of GPT‑4.5—our largest and best model for chat yet. GPT‑4.5 is a step forward in scaling up pre-training and post-training.</p>
+                            <div class="resource-meta">
+                                <a href="https://openai.com/index/introducing-gpt-4-5/" target="_blank" class="btn-secondary">Read Article</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://telecomtalk.info/wp-content/uploads/2025/02/openai-new-ai-agent-in-chatgpt-research.jpg.webp" alt="Deep Research thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Article</span>
+                            <h3>Introducing Deep Research</h3>
+                            <p>An agent that uses reasoning to synthesize large amounts of online information and complete multi-step research tasks for you.</p>
+                            <div class="resource-meta">
+                                <a href="https://openai.com/index/introducing-deep-research/" target="_blank" class="btn-secondary">Read Article</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F4dface4fdc350ad704f19a8f8704cf3264c55682-2880x1620.png&w=3840&q=75" alt="Claude 3.7 Sonnet thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Article</span>
+                            <h3>Claude 3.7 Sonnet</h3>
+                            <p>Anthropic introduces their new AI assistant model with enhanced reasoning capabilities and improved performance on tasks requiring careful analysis.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.anthropic.com/news/claude-3-7-sonnet" target="_blank" class="btn-secondary">Read Article</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2Fd4b60fbc087e8ec3f47c69fbe03298fedcaebb9c-2880x1620.png&w=3840&q=75" alt="Visible Extended Thinking thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Article</span>
+                            <h3>Visible Extended Thinking</h3>
+                            <p>Anthropic reveals new capabilities allowing users to see Claude's step-by-step reasoning process, improving transparency and trust in AI systems.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.anthropic.com/news/visible-extended-thinking" target="_blank" class="btn-secondary">Read Article</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://framerusercontent.com/images/eolKgQGzXrc3VFRfpQkNmz1ZvQ.png" alt="Perplexity Deep Research thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Article</span>
+                            <h3>Introducing Perplexity Deep Research</h3>
+                            <p>Perplexity AI launches its advanced research capability designed to provide more thorough, comprehensive answers to complex questions.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.perplexity.ai/hub/blog/introducing-perplexity-deep-research" target="_blank" class="btn-secondary">Read Article</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://images.fastcompany.com/image/upload/f_webp,q_auto,c_fit,w_1024,h_1024/wp-cms-2/2025/01/i-0-91268357-deepseek-logo.jpg" alt="Open Sourcing R1-1776 thumbnail">
+                        <div class="resource-content">
+                            <span class="tag">Article</span>
+                            <h3>Open Sourcing R1-1776</h3>
+                            <p>Perplexity releases its state-of-the-art ranking model to the open-source community, enabling developers to build better search and recommendation systems.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.perplexity.ai/hub/blog/open-sourcing-r1-1776" target="_blank" class="btn-secondary">Read Article</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Videos Tab Content with updated descriptions -->
+            <div class="tab-content" id="videos-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <img src="https://i.ytimg.com/vi/_1f-o0nqpEI/maxresdefault.jpg" alt="Andrej Karpathy GPT-4 Vision">
+                        <div class="resource-content">
+                            <span class="tag">Video</span>
+                            <h3>DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters</h3>
+                            <p>Dylan Patel is the founder of SemiAnalysis, a research & analysis company specializing in semiconductors, GPUs, CPUs, and AI hardware.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.youtube.com/watch?v=_1f-o0nqpEI" target="_blank" class="btn-secondary">Watch Video</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://i.ytimg.com/vi/7xTGNNLPyMI/maxresdefault.jpg" alt="Ilya Sutskever and Tesla">
+                        <div class="resource-content">
+                            <span class="tag">Video</span>
+                            <h3>Deep Dive into LLMs like ChatGPT</h3>
+                            <p>This is a general audience deep dive into the Large Language Model (LLM) AI technology that powers ChatGPT and related products.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.youtube.com/watch?v=7xTGNNLPyMI&t=2427s" target="_blank" class="btn-secondary">Watch Video</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://i.ytimg.com/vi/bNEvJYzoa8A/maxresdefault.jpg" alt="Claude 3 Keynote">
+                        <div class="resource-content">
+                            <span class="tag">Video</span>
+                            <h3>OpenAI's Deep Research Team on Why Reinforcement Learning is the Future for AI Agents</h3>
+                            <p>OpenAI's Isa Fulford and Josh Tobin discuss how the company's newest agent, Deep Research, represents a breakthrough in AI research capabilities by training models end-to-end rather than using hand-coded operational graphs.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.youtube.com/watch?v=bNEvJYzoa8A" target="_blank" class="btn-secondary">Watch Video</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://i.ytimg.com/vi/YkCDVn3_wiw/maxresdefault.jpg" alt="Diffusion Models Stanford">
+                        <div class="resource-content">
+                            <span class="tag">Video</span>
+                            <h3>Introduction to Deep Research</h3>
+                            <p>Mark Chen, Josh Tobin, Neel Ajjarapu, and Isa Fulford introduce and demo deep research</p>
+                            <div class="resource-meta">
+                                <a href="https://www.youtube.com/watch?v=YkCDVn3_wiw" target="_blank" class="btn-secondary">Watch Video</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <img src="https://i.ytimg.com/vi/pZybROKrj2Q/maxresdefault.jpg" alt="Transformer Networks">
+                        <div class="resource-content">
+                            <span class="tag">Video</span>
+                            <h3>Unreasonably Effective AI with Demis Hassabis</h3>
+                            <p>Listen as they discuss the recent explosion of interest in AI, what Demis means when he describes chatbots as 'unreasonably effective', and the unexpected emergence of capabilities like conceptual understanding and abstraction in recent generative models.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.youtube.com/watch?v=pZybROKrj2Q&t=28s" target="_blank" class="btn-secondary">Watch Video</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Books Tab Content with Updated Image -->
+            <div class="tab-content" id="books-content">
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <img src="https://images.penguinrandomhouse.com/cover/9780593716717" alt="Co-Intelligence book cover">
+                        <div class="resource-content">
+                            <span class="tag">Book</span>
+                            <h3>Co-Intelligence: Living and Working with AI</h3>
+                            <p>By Ethan Mollick. A practical guide to effectively collaborating with AI systems to enhance productivity, creativity, and decision-making in work and daily life.</p>
+                            <div class="resource-meta">
+                                <a href="https://www.amazon.com/Co-Intelligence-Living-Working-Ethan-Mollick/dp/059371671X" target="_blank" class="btn-secondary">View Book</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="news">
+            <div style="padding-left: 40px; padding-right: 40px;">
+                <h2>Insurance News & Analysis</h2>
+                
+                <div class="news-item" style="margin-left: 20px;">
+                    <h3>AI summary of the IBNR Weekly February 27, 2025</h3>
+                    
+                    <div class="news-content">
+                        <p>The February 27, 2025, issue of IBNR Weekly addresses several critical developments in the insurance industry:</p>
+                        
+                        <p><strong>California Homeowners' Insurance Crisis</strong><br>
+                        The report highlights the escalating homeowners' insurance crisis in California, exacerbated by recent substantial wildfire losses. This situation is drawing comparisons to Florida's historically dysfunctional homeowners' market. The analysis underscores significant differences between the two states, particularly concerning post-event funding mechanisms, markets of last resort, regulatory priorities, and legislative impacts. The authors express concern over California's regulatory environment, which emphasizes consumer cost capping, potentially at the expense of insurer solvency. This stance may lead to a reduction in admitted insurance options, pushing more business into Excess and Surplus (E&S) lines and the state's FAIR Plan, which has now surpassed Florida's Citizens Property Insurance Corporation as the largest state plan, with over $450 billion in exposure. Recent reforms offer some hope for improvement, but their effectiveness remains to be seen, especially in light of the 2025 wildfires and the political nature of California's regulatory environment.</p>
+                        
+                        <p><strong>State Farm General's Financial Struggles</strong><br>
+                        State Farm General (SFG) is facing significant financial challenges following the wildfires, with its surplus nearing the Authorized Control Level Risk-Based Capital (RBC) threshold. The company reports a surplus of approximately $640 million against $3.2 billion in Net Premiums Written (NPW). This precarious financial position raises concerns about SFG's ability to continue operating under current conditions and regulatory constraints.</p>
+                        
+                        <p><strong>Reserve Trends and Schedule P Analysis</strong><br>
+                        The report provides an analysis of reserve trends based on initial 10-K data, indicating continued favorable development in Workers' Compensation, though less pronounced than in previous years. This positive trend is partly offset by increased attention to General Liability and Commercial Auto lines, particularly concerning recent accident years. The analysis suggests a cautious approach to these lines, given the evolving loss development patterns.</p>
+                        
+                        <p><strong>Quick Updates</strong></p>
+                        <ul>
+                            <li><strong>Berkshire Hathaway's Annual Letter</strong>: The letter offers limited new information, with minimal discussion on (re)insurance operations.</li>
+                            <li><strong>Texas Windstorm Insurance Association (TWIA)</strong>: The TWIA Board has adjusted model weightings to achieve a desired Probable Maximum Loss (PML), resulting in a 5% year-over-year decrease. This adjustment requires minimal additional reinsurance limits for the June 1 renewal.</li>
+                            <li><strong>Crop Insurance Market</strong>: The market is anticipating flat to slightly declining premiums for 2025.</li>
+                            <li><strong>Personal Auto Lead Generation</strong>: There is a broadening demand for leads across carriers and channels, indicating a competitive landscape in the personal auto insurance sector.</li>
+                        </ul>
+                        
+                        <p><strong>Earnings Reports</strong><br>
+                        The issue includes earnings summaries for major insurers:</p>
+                        <ul>
+                            <li><strong>Munich Re</strong>: Detailed financial performance analysis.</li>
+                            <li><strong>Swiss Re</strong>: Insights into recent earnings and strategic initiatives.</li>
+                            <li><strong>AXA</strong>: Overview of financial results and market positioning.</li>
+                        </ul>
+                        
+                        <p>For a more in-depth analysis and specific company data, the full report can be accessed <a href="https://pelicanventures.github.io/newai/audio/IBNR%20Weekly%20-%20February%2027,%202025.pdf" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: underline;">here</a>.</p>
+                        
+                        <!-- Podcast Player -->
+                        <div class="podcast-player">
+                            <div class="podcast-header">
+                                <div class="podcast-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z"/>
+                                    </svg>
+                                </div>
+                                <div class="podcast-info">
+                                    <h4>AI generated Podcast discussing the IBNR Weekly</h4>
+                                    <p>February 27, 2025 • 18:42 min</p>
+                                </div>
+                            </div>
+                            
+                            <div class="audio-player">
+                                <audio controls>
+                                    <source src="https://pelicanventures.github.io/newai/audio/IBNR%20Weekly%20Feb%2027.mp3" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                            
+                            <a href="https://pelicanventures.github.io/newai/audio/IBNR%20Weekly%20Feb%2027.mp3" download class="download-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="news-item" style="margin-left: 20px; margin-top: 40px; border-top: 1px solid var(--border); padding-top: 40px;">
+                    <h3>AI summary of the IBNR Weekly February 20, 2025</h3>
+                    
+                    <div class="news-content">
+                        <p>As the fourth quarter earnings season for the U.S. (re)insurance sector approaches its conclusion, several key themes have emerged, reflecting both challenges and opportunities within the industry.</p>
+                        
+                        <p><strong>Earnings Season Overview</strong><br>
+                        With approximately 67% of companies having reported their earnings, the sector has experienced varied performance. Underwriters have seen a slight decline of 0.6%, while brokers have enjoyed a 3.6% increase since the earnings season began on January 22, 2025. In comparison, the S&P Financials index rose by 1.3%, and the S&P 500 increased by 1.1% during the same period. Progressive stands out with an 11.1% increase, buoyed by positive January results. Conversely, companies like Selective Insurance, RenaissanceRe, American Financial, SiriusPoint, Fidelis, and Everest have underperformed, with many recognizing net adverse prior-year development (PYD) in Q4.</p>
+                        
+                        <p><strong>California Wildfire Losses</strong><br>
+                        The California wildfires have had a significant impact, with current loss estimates around $20 billion and projections exceeding $40 billion. In response, the California Department of Insurance has requested State Farm to justify its proposed rate increase, indicating heightened regulatory scrutiny.</p>
+                        
+                        <p><strong>Russia/Ukraine Aviation Litigation</strong><br>
+                        Geopolitical tensions have also influenced the sector. Fidelis Insurance reported a net charge of $287 million due to aviation litigation related to the Russia/Ukraine conflict, highlighting the broader implications of international events on the insurance industry.</p>
+                        
+                        <p><strong>Commercial Insurance Pricing Trends</strong><br>
+                        The Council of Insurance Agents & Brokers (CIAB) Market Index moderated to a 5.4% increase in Q4, down from 5.7% in Q3. This suggests a slight easing in commercial insurance pricing trends, which could influence underwriting strategies moving forward.</p>
+                        
+                        <p><strong>Personal Auto Insurance Market</strong><br>
+                        In the personal auto insurance sector, elevated shopping activity persisted through year-end, as reported by LexisNexis. This trend indicates ongoing competition and consumer engagement, factors that insurers must navigate to maintain market share.</p>
+                        
+                        <p><strong>Total Value Creation (TVC) Scorecard</strong><br>
+                        The 2024 Dowling & Partners (D&P) Composite Simple Average for Total Value Creation at Cost was +19%, with individual company performance ranging from over +40% for Palomar Holdings and Progressive to -25% for James River Group Holdings. The two-year forward TVC at cost is approximately 14%, compared to approximately 11% over the last three years, suggesting a cautiously optimistic outlook for the sector.</p>
+                        
+                        <p><strong>Additional Observations</strong><br>
+                        The report also provides a detailed composite price performance analysis since previous market highs on February 19, 2020, offering insights into individual company performances over this period. As the earnings season concludes, attention is shifting toward upcoming 10-K filings and statutory data releases, which will offer a more comprehensive view of reserve trends and market share dynamics.</p>
+                        
+                        <p>For a more in-depth analysis and specific company data, the full report can be accessed <a href="https://pelicanventures.github.io/newai/audio/IBNR%20Weekly%20-%20February%2020,%202025.pdf" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: underline;">here</a>.</p>
+                        
+                        <!-- Podcast Player -->
+                        <div class="podcast-player">
+                            <div class="podcast-header">
+                                <div class="podcast-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z"/>
+                                    </svg>
+                                </div>
+                                <div class="podcast-info">
+                                    <h4>AI generated Podcast discussing the IBNR Weekly</h4>
+                                    <p>February 20, 2025 • 18:42 min</p>
+                                </div>
+                            </div>
+                            
+                            <div class="audio-player">
+                                <audio controls>
+                                    <source src="https://pelicanventures.github.io/newai/audio/IBNR%20Weekly%20Feb%2020.mp3" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                            
+                            <a href="https://pelicanventures.github.io/newai/audio/IBNR%20Weekly%20Feb%2020.mp3" download class="download-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="newsletter">
+            <h2>AI Innovation Newsletter</h2>
+            
+            <div class="newsletter">
+                <div class="newsletter-meta">
+                    <span>Volume 3, Issue 4</span>
+                    <span>February 15-28, 2025</span>
+                </div>
+                <h3>AI Initiatives Update: Claims Automation Pilot</h3>
+                <p>Our claims automation project with PartnerCo has completed its first phase, processing over 5,000 auto claims with impressive results:</p>
+                <ul>
+                    <li>76% of claims handled without human intervention</li>
+                    <li>Average processing time reduced from 3.2 days to 6.4 hours</li>
+                    <li>Customer satisfaction scores increased by 12 points</li>
+                </ul>
+                <p>Phase two will expand to homeowners claims starting next month, with a focus on water damage incidents initially.</p>
+                
+                <h3>Team Spotlight: Data Science Group</h3>
+                <p>Our data science team has grown to 12 members with the addition of Dr. Sarah Chen, who joins us from Stanford's AI Lab. Sarah will lead our efforts in generative AI applications for insurance product development.</p>
+                
+                <h3>Research Corner: Active Learning in Underwriting</h3>
+                <p>We've published a new white paper on active learning techniques that reduce the data requirements for building effective underwriting models. Early tests show we can achieve comparable accuracy with 40% less labeled data, significantly accelerating model development cycles.</p>
+                
+                <a href="#" class="btn">View Full Newsletter</a>
+            </div>
+            
+            <div class="newsletter">
+                <div class="newsletter-meta">
+                    <span>Volume 3, Issue 3</span>
+                    <span>February 1-14, 2025</span>
+                </div>
+                <h3>AI Initiatives Update: LLM Fine-tuning Project</h3>
+                <p>We've completed fine-tuning our domain-specific language model on insurance documents, with impressive early results in policy analysis and coverage interpretation. The model can now accurately extract key terms from policies and identify potential coverage gaps.</p>
+                
+                <h3>Industry Partnership: University Research Program</h3>
+                <p>We're excited to announce a new partnership with MIT's Insurance Innovation Lab to sponsor three graduate research projects focused on AI applications in risk assessment.</p>
+                
+                <a href="#" class="btn">View Full Newsletter</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="footer-logo-symbol">
+                        <img src="https://static.wixstatic.com/media/806338_4cf2c29b177b4fd9bc360a99d10ff304~mv2.jpg/v1/fill/w_200,h_66,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/PV_LOGO_CMYK_on%20white%20-%20CROPPED.jpg" alt="Pelican Ventures Logo" style="height: 50px;">
+                    </div>
+                    <h3>Pelican Ventures</h3>
+                    <p>Empowering the future of insurance through technology and innovation.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#resources">AI Resources</a></li>
+                            <li><a href="#news">Insurance News</a></li>
+                            <li><a href="#newsletter">AI Newsletter</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li><a href="mailto:info@pelican.vc">info@pelican.vc</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Pelican Ventures. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <style>
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 40px;
+            margin-top: 80px;
+        }
+        
+        .footer-logo-symbol {
+            margin-bottom: 15px;
+        }
+        
+        .footer-logo h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .footer-column h4 {
+            position: relative;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding-bottom: 12px;
+        }
+        
+        .footer-column h4::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            padding-left: 2px;
+        }
+        
+        .footer-column a::before {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .footer-column a:hover::before {
+            width: 100%;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 60px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show corresponding tab content
+                const tabType = tab.getAttribute('data-tab');
+                document.getElementById(`${tabType}-content`).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
